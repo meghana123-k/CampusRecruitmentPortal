@@ -11,11 +11,12 @@ export enum JobStatus {
 
 // Define job type enum
 export enum JobType {
-  FULL_TIME = 'full_time',
-  PART_TIME = 'part_time',
-  INTERNSHIP = 'internship',
-  CONTRACT = 'contract'
+  FULL_TIME = 'FULL_TIME',
+  PART_TIME = 'PART_TIME',
+  INTERNSHIP = 'INTERNSHIP',
+  CONTRACT = 'CONTRACT'
 }
+
 
 // Define job attributes interface
 export interface JobAttributes {

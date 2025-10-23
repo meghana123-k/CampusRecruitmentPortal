@@ -1,4 +1,6 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   Container,
   Typography,
@@ -28,6 +30,7 @@ import { UserRole } from '../types';
 
 const DashboardPage: React.FC = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -174,9 +177,11 @@ const DashboardPage: React.FC = () => {
                       variant="contained"
                       startIcon={<AddIcon />}
                       size="small"
+                      onClick={() => navigate('/recruiter/post-job')}
                     >
                       Post New Job
                     </Button>
+
                   </Box>
                   <Typography variant="body2" color="text.secondary">
                     Manage your job postings and review applications from students.
@@ -241,9 +246,11 @@ const DashboardPage: React.FC = () => {
                       variant="contained"
                       startIcon={<WorkIcon />}
                       size="small"
+                      onClick={() => navigate('/student/jobs')}
                     >
                       Browse Jobs
                     </Button>
+
                   </Box>
                   <Typography variant="body2" color="text.secondary">
                     Explore available job opportunities and apply to positions that match your skills.
