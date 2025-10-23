@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 import {
   Container,
@@ -40,6 +41,32 @@ const DashboardPage: React.FC = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+  const [dashboardData, setDashboardData] = useState({
+    totalUsers: 0,
+    totalJobs: 0,
+    totalApplications: 0,
+    totalStudents: 0,
+    myJobs: 0,
+    receivedApplications: 0,
+    shortlistedCandidates: 0,
+    availableJobs: 0,
+    myApplications: 0,
+    interviews: 0,
+  });
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const res = await fetch('/api/dashboard'); // replace with your API endpoint
+        const data = await res.json();
+        setDashboardData(data);
+      } catch (error) {
+        console.error('Failed to fetch dashboard data', error);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
 
   const handleLogout = () => {
     logout();
@@ -133,7 +160,7 @@ const DashboardPage: React.FC = () => {
                     <WorkIcon color="primary" sx={{ mr: 1 }} />
                     <Typography variant="h6">My Jobs</Typography>
                   </Box>
-                  <Typography variant="h4" color="primary">0</Typography>
+                  <Typography variant="h4" color="primary">{dashboardData.myJobs}</Typography>
                   <Typography variant="body2" color="text.secondary">
                     Posted Jobs
                   </Typography>
@@ -147,7 +174,7 @@ const DashboardPage: React.FC = () => {
                     <AssignmentIcon color="primary" sx={{ mr: 1 }} />
                     <Typography variant="h6">Applications</Typography>
                   </Box>
-                  <Typography variant="h4" color="primary">0</Typography>
+                  <Typography variant="h4" color="primary">{dashboardData.receivedApplications}</Typography>
                   <Typography variant="body2" color="text.secondary">
                     Received Applications
                   </Typography>
@@ -161,7 +188,7 @@ const DashboardPage: React.FC = () => {
                     <PeopleIcon color="primary" sx={{ mr: 1 }} />
                     <Typography variant="h6">Candidates</Typography>
                   </Box>
-                  <Typography variant="h4" color="primary">0</Typography>
+                  <Typography variant="h4" color="primary">{dashboardData.shortlistedCandidates}</Typography>
                   <Typography variant="body2" color="text.secondary">
                     Shortlisted Candidates
                   </Typography>

@@ -1,0 +1,108 @@
+/* === BrowseJobsPage.css === */
+
+.browse-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e3a8a; /* Indigo-900 */
+    text-align: center;
+    margin-bottom: 2rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .no-jobs {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #64748b;
+    margin-top: 3rem;
+  }
+  
+  .jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .job-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-left: 6px solid #2563eb; /* Blue accent */
+    transition: all 0.3s ease;
+  }
+  
+  .job-card:hover {
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+    transform: translateY(-4px);
+  }
+  
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .job-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .job-type {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  
+  .job-description {
+    margin: 0.75rem 0;
+    color: #374151;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  .job-info p {
+    margin: 0.3rem 0;
+    color: #475569;
+    font-size: 0.9rem;
+  }
+  
+  .apply-btn {
+    margin-top: 1rem;
+    width: 100%;
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    color: white;
+    font-weight: 600;
+    border: none;
+    padding: 0.7rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .apply-btn:hover {
+    background: linear-gradient(to right, #1d4ed8, #1e40af);
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

@@ -3,12 +3,12 @@ import authRoutes from './authRoutes';
 import userRoutes from './userRoutes';
 import jobRoutes from './jobRoutes';
 import applicationRoutes from './applicationRoutes';
+import dashboardRoutes from './dashboardRoute';
 
 const router = Router();
 
 // API version prefix
 const API_VERSION = '/api/v1';
-
 // Route definitions
 router.use(`${API_VERSION}/auth`, authRoutes);
 router.use(`${API_VERSION}/users`, userRoutes);

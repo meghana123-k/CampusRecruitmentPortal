@@ -9,7 +9,7 @@ const RecruiterDashboard: React.FC = () => {
     const fetchJobs = async () => {
       try {
         const res = await apiService.getJobsByRecruiter();
-        setJobs(res.data || []);
+        setJobs(res.data.jobs || []);
       } catch (err) {
         console.error('Error fetching recruiter jobs:', err);
       }
