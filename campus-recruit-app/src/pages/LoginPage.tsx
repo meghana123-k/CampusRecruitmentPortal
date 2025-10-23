@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { Login as LoginIcon, PersonAdd as RegisterIcon } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
-import { UserLogin } from '../types';
+import type { UserLogin } from '../types';
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<UserLogin>({

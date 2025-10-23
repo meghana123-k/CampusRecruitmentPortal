@@ -17,7 +17,8 @@ import {
 } from '@mui/material';
 import { PersonAdd as RegisterIcon, Login as LoginIcon } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
-import { UserRegistration, UserRole } from '../types';
+import { UserRole } from '../types'; // runtime import
+import type { UserRegistration } from '../types'; // type import
 
 const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState<UserRegistration>({

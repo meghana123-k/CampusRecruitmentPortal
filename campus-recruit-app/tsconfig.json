@@ -1,4 +1,11 @@
 {
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
