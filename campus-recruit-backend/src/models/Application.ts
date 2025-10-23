@@ -25,6 +25,7 @@ export interface ApplicationAttributes {
   notes?: string;
   createdAt?: Date;
   updatedAt?: Date;
+  job?: Job;
 }
 
 // Define optional attributes for creation
@@ -43,6 +44,9 @@ export class Application extends Model<ApplicationAttributes, ApplicationCreatio
   public notes?: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  public readonly job?: Job;
+  public readonly student?: User;
 
   // Instance method to check if application is pending
   public isPending(): boolean {

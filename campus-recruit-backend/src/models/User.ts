@@ -1,6 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
+
 
 // Define user roles
 export enum UserRole {

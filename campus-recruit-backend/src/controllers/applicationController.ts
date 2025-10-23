@@ -243,8 +243,8 @@ export const getApplicationById = async (req: Request, res: Response): Promise<v
     
     // Check permissions
     const canView = req.userRole === 'admin' ||
-                   application.studentId === req.userId ||
-                   (req.userRole === 'recruiter' && application.job.recruiterId === req.userId);
+               application.studentId === req.userId ||
+               (req.userRole === 'recruiter' && application.job?.recruiterId === req.userId);
     
     if (!canView) {
       res.status(403).json({
@@ -293,7 +293,7 @@ export const updateApplicationStatus = async (req: Request, res: Response): Prom
     
     // Check permissions
     const canUpdate = req.userRole === 'admin' ||
-                     (req.userRole === 'recruiter' && application.job.recruiterId === req.userId);
+                 (req.userRole === 'recruiter' && application.job?.recruiterId === req.userId);
     
     if (!canUpdate) {
       res.status(403).json({

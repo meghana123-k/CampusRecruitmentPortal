@@ -196,7 +196,8 @@ export const createJob = async (req: Request, res: Response): Promise<void> => {
       salaryMin,
       salaryMax,
       jobType,
-      applicationDeadline: applicationDeadline ? new Date(applicationDeadline) : null,
+      applicationDeadline: applicationDeadline ? new Date(applicationDeadline) : undefined,
+
       recruiterId: req.userId!,
       status: JobStatus.ACTIVE,
     });
