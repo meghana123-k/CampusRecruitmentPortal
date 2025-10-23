@@ -11,6 +11,17 @@ export { Application, ApplicationStatus } from './Application';
 // Export sequelize instance
 export { default as sequelize } from '../config/database';
 
+// Test database connection function
+export const testConnection = async (): Promise<void> => {
+  try {
+    await sequelize.authenticate();
+    console.log('✅ Database connection established successfully.');
+  } catch (error) {
+    console.error('❌ Unable to connect to the database:', error);
+    process.exit(1);
+  }
+};
+
 // Sync database function
 export const syncDatabase = async (force: boolean = false): Promise<void> => {
   try {
