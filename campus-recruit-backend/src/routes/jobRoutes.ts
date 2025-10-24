@@ -24,7 +24,7 @@ router.get('/:id', optionalAuth, validate(validateJobId), getJobById);
 router.use(authenticate);
 
 // Recruiter/Admin routes
-router.post('/', recruiterOrAdmin, validate(validateJobData), createJob);
+router.post('/', authenticate, validate(validateJobData), createJob);
 router.put('/:id', recruiterOrAdmin, validate([...validateJobId, ...validateJobData]), updateJob);
 router.delete('/:id', recruiterOrAdmin, validate(validateJobId), deleteJob);
 

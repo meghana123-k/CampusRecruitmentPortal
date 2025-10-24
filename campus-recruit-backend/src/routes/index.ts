@@ -14,6 +14,7 @@ router.use(`${API_VERSION}/auth`, authRoutes);
 router.use(`${API_VERSION}/users`, userRoutes);
 router.use(`${API_VERSION}/jobs`, jobRoutes);
 router.use(`${API_VERSION}/applications`, applicationRoutes);
+router.use(`${API_VERSION}/dashboard`, dashboardRoutes);
 
 // Health check endpoint
 router.get('/health', (req, res) => {

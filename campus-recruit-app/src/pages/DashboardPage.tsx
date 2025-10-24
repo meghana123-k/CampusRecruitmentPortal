@@ -53,20 +53,44 @@ const DashboardPage: React.FC = () => {
     myApplications: 0,
     interviews: 0,
   });
+  // useEffect(() => {
+  //   const fetchDashboardData = async () => {
+  //     try {
+  //       const res = await fetch('/api/dashboard'); // replace with your API endpoint
+  //       const data = await res.json();
+  //       setDashboardData(data);
+  //     } catch (error) {
+  //       console.error('Failed to fetch dashboard data', error);
+  //     }
+  //   };
+
+  //   fetchDashboardData();
+  // }, []);
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const res = await fetch('/api/dashboard'); // replace with your API endpoint
+        const token = localStorage.getItem('token');
+        const res = await fetch('http://localhost:5000/api/v1/dashboard', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await res.json();
+  
+        if (!res.ok) {
+          throw new Error(data.message || 'Failed to fetch');
+        }
+  
         setDashboardData(data);
       } catch (error) {
         console.error('Failed to fetch dashboard data', error);
       }
     };
-
+  
     fetchDashboardData();
   }, []);
-
+  
 
   const handleLogout = () => {
     logout();
