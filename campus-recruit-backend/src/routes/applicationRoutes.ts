@@ -1,37 +1,28 @@
 import { Router } from 'express';
-import {
-  applyForJob,
-  getAllApplications,
-  getApplicationById,
-  updateApplicationStatus,
-  deleteApplication,
-  getApplicationsByJob,
-  getApplicationStats,
-  validateApplicationData,
-  validateApplicationUpdate,
-  validateApplicationId,
-} from '../controllers/applicationController';
-import { authenticate, recruiterOrAdmin, studentOrAdmin } from '../middleware/auth';
+import { body } from 'express-validator';
+import { applyForJob, getAllApplications } from '../controllers/applicationController';
 import { validate } from '../middleware/validation';
 
+// Validation rules
+const validateApplicationData = [
+  body('applicantName').notEmpty().withMessage('Name is required'),
+  body('applicantEmail').isEmail().withMessage('Valid email is required'),
+  body('graduationYear')
+    .notEmpty()
+    .isInt({ min: 1900, max: new Date().getFullYear() + 5 })
+    .withMessage('Valid graduation year is required'),
+  body('skills').notEmpty().withMessage('Skills are required'),
+  body('coverLetter')
+    .optional()
+    .isLength({ max: 2000 })
+    .withMessage('Cover letter cannot exceed 2000 characters'),
+];
+
+// Router
 const router = Router();
 
-// All routes require authentication
-router.use(authenticate);
-
-// Student routes
-router.post('/', studentOrAdmin, validate(validateApplicationData), applyForJob);
-
-// Get applications (accessible by all authenticated users with role-based filtering)
+// Routes
+router.post('/', validate(validateApplicationData), applyForJob);
 router.get('/', getAllApplications);
-router.get('/stats', getApplicationStats);
-router.get('/:id', validate(validateApplicationId), getApplicationById);
-
-// Recruiter/Admin routes
-router.put('/:id/status', recruiterOrAdmin, validate([...validateApplicationId, ...validateApplicationUpdate]), updateApplicationStatus);
-router.get('/job/:jobId', recruiterOrAdmin, getApplicationsByJob);
-
-// Student/Admin routes
-router.delete('/:id', studentOrAdmin, validate(validateApplicationId), deleteApplication);
 
 export default router;

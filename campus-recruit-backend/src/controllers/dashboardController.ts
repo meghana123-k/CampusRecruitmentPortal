@@ -1,19 +1,16 @@
-// controllers/dashboardController.ts
 import { Request, Response } from 'express';
-import { Job } from '../models/Job';
-import { Application, ApplicationStatus } from '../models/Application';
 import { User, UserRole } from '../models/User';
+import Job from '../models/Job';
+import Application from '../models/Application';
 
 export const getDashboardData = async (req: Request, res: Response) => {
   try {
     const role = req.userRole;
-    const userId = req.userId;
+    const userEmail = req.user?.email;
 
-    if (!role) {
-      return res.status(401).json({ message: 'User not authenticated' });
-    }
+    if (!role) return res.status(401).json({ message: 'User not authenticated' });
 
-    const data = {
+    const data: any = {
       totalUsers: 0,
       totalJobs: 0,
       totalApplications: 0,
@@ -35,36 +32,32 @@ export const getDashboardData = async (req: Request, res: Response) => {
         break;
 
       case UserRole.RECRUITER:
+        const userId = req.userId;
         if (!userId) throw new Error('User not authenticated');
 
         data.myJobs = await Job.count({ where: { recruiterId: userId } });
 
-        const jobs = await Job.findAll({ where: { recruiterId: userId } });
-        const jobIds = jobs.map(j => j.id);
+        // Option 1: approximate applications by matching skills to jobs titles
+        const myJobs = await Job.findAll({ where: { recruiterId: userId } });
+        const jobTitles = myJobs.map(j => j.title);
 
-        if (jobIds.length > 0) {
-          data.receivedApplications = await Application.count({ where: { jobId: jobIds } });
-          data.shortlistedCandidates = await Application.count({
-            where: { jobId: jobIds, status: ApplicationStatus.SHORTLISTED },
-          });
-        } else {
-          data.receivedApplications = 0;
-          data.shortlistedCandidates = 0;
-        }
+        data.receivedApplications = await Application.count({
+          where: {
+            skills: jobTitles.length > 0 ? jobTitles : undefined,
+          },
+        });
         break;
 
       case UserRole.STUDENT:
-        if (!userId) throw new Error('User not authenticated');
-
+        if (!userEmail) throw new Error('User not authenticated');
         data.availableJobs = await Job.count({ where: { status: 'active' } });
-        data.myApplications = await Application.count({ where: { studentId: userId } });
-        data.interviews = 0; // implement later if you have interview model
+        data.myApplications = await Application.count({ where: { applicantEmail: userEmail } });
         break;
     }
 
-    return res.json(data);
+    return res.json({ success: true, data });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Failed to fetch dashboard data' });
+    return res.status(500).json({ success: false, message: 'Failed to fetch dashboard data' });
   }
 };

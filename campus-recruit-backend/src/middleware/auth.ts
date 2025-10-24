@@ -1,8 +1,12 @@
+// src/middleware/auth.ts
+
 import { Request, Response, NextFunction } from 'express';
 import { User, UserRole } from '../models/User';
 import { verifyToken, extractTokenFromHeader, JWTPayload } from '../utils/jwt';
 
-// Extend Request interface to include authenticated user info
+/**
+ * Extend Express Request interface to include authenticated user info
+ */
 declare global {
   namespace Express {
     interface Request {
@@ -14,12 +18,11 @@ declare global {
 }
 
 /**
- * Authenticate the user using JWT
+ * Middleware: Authenticate user using JWT
  */
 export const authenticate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
-
     if (!authHeader) {
       res.status(401).json({ success: false, message: 'No authorization header provided' });
       return;
@@ -51,16 +54,16 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
 
     next();
   } catch (error) {
-    res.status(401).json({ 
-      success: false, 
-      message: error instanceof Error ? error.message : 'Authentication failed' 
+    res.status(401).json({
+      success: false,
+      message: error instanceof Error ? error.message : 'Authentication failed',
     });
   }
 };
 
 /**
- * Authorization middleware factory
- * @param roles Allowed roles for the route
+ * Middleware: Authorization factory
+ * @param roles - Allowed roles
  */
 export const authorize = (...roles: UserRole[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
@@ -78,30 +81,31 @@ export const authorize = (...roles: UserRole[]) => {
   };
 };
 
-/** Predefined role-based middlewares */
+/**
+ * Predefined role-based middlewares
+ */
 export const adminOnly = authorize(UserRole.ADMIN);
 export const recruiterOrAdmin = authorize(UserRole.RECRUITER, UserRole.ADMIN);
 export const studentOrAdmin = authorize(UserRole.STUDENT, UserRole.ADMIN);
 
 /**
- * Optional authentication middleware (doesn't fail if no token)
+ * Optional authentication (doesn't fail if token is missing or invalid)
  */
 export const optionalAuth = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
-
     if (authHeader) {
       const token = extractTokenFromHeader(authHeader);
-      const payload: JWTPayload = verifyToken(token);
-
-      const user = await User.findByPk(payload.userId);
-      if (user && user.isActive) {
-        req.user = user;
-        req.userId = user.id;
-        req.userRole = user.role;
+      if (token) {
+        const payload: JWTPayload = verifyToken(token);
+        const user = await User.findByPk(payload.userId);
+        if (user && user.isActive) {
+          req.user = user;
+          req.userId = user.id;
+          req.userRole = user.role;
+        }
       }
     }
-
     next();
   } catch {
     // Continue without authentication
