@@ -1,13 +1,33 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
 export enum ApplicationStatus {
-  PENDING = 'PENDING',
-  SHORTLISTED = 'SHORTLISTED',
-  REJECTED = 'REJECTED',
+  PENDING = 'pending',
+  SHORTLISTED = 'shortlisted',
+  REJECTED = 'rejected',
 }
 
-export class Application extends Model {
+interface ApplicationAttributes {
+  id: number;
+  applicantName: string;
+  applicantEmail: string;
+  graduationYear?: number;
+  skills?: string;
+  coverLetter?: string;
+  status: ApplicationStatus;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+type ApplicationCreationAttributes = Optional<
+  ApplicationAttributes,
+  'id' | 'status' | 'createdAt' | 'updatedAt'
+>;
+
+export class Application
+  extends Model<ApplicationAttributes, ApplicationCreationAttributes>
+  implements ApplicationAttributes
+{
   public id!: number;
   public applicantName!: string;
   public applicantEmail!: string;
@@ -40,7 +60,7 @@ Application.init(
       allowNull: true,
     },
     skills: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     coverLetter: {
@@ -56,6 +76,7 @@ Application.init(
   {
     sequelize,
     tableName: 'applications',
+    timestamps: true,
   }
 );
 
